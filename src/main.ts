@@ -1,37 +1,45 @@
-const a = {
-  hello: { cvalue: 1 },
+
+const a: Task5Object = {
+  hello: {cvalue: 1},
   world: {
     cvalue:
-      { yay: { cvalue: '2' } }
+      {yay: {cvalue: '2'}}
   },
-  dich: { cvalue: 'a3' }
+  dich: {cvalue: 'a3'}
 };
-interface Task5Object {
-  [item:string] : undefined | IMyInterface
+const obj: Task5Object = {
+  mobo: undefined,
+  hello: {cvalue: 1},
+  world: {
+    cvalue:
+      {
+        yay: {cvalue: "2"},
+        grgr: {cvalue: undefined},
+        grr: {cvalue: "1q"},
+        qq: undefined,
+      }
+  },
+  grgr: {cvalue: undefined}
 }
-interface  IMyInterface{
-  cvalue: Task5Type
+const c = {}
+interface Task5Object {
+  [item: string]: undefined | { cvalue: Task5Type }
 }
 
 type Task5Type = undefined | string | number | Task5Object
 
-function countValues(countObject: Task5Object) {
-  let result = 0;
-  Object.keys(countObject).forEach((key)=> {
-    let value = countObject[key]
-    if (typeof value.cvalue == 'number' || typeof  value.cvalue == 'string'){
-        if (!isNaN(+value.cvalue)){
-          result += +value.cvalue}
-        else {
-          result += 2021
-        }
-    }else if ( typeof value.cvalue == "object"){
-      result += countValues(value.cvalue)
-    }else if (typeof  value.cvalue == 'undefined'){
-      result += 2021
-    }
-  })
-  return result
+function summ(a: Task5Object) {
+  const x = Object.keys(a).map((k) => {
+    const elem = a[k];
+    if (typeof elem === 'undefined' || typeof elem.cvalue === 'undefined') return 2021;
+    if (typeof elem.cvalue === 'string') return +elem.cvalue || 2021;
+    if (typeof elem.cvalue === "object") return +summ(elem.cvalue);
+    return elem.cvalue;
+  });
+  let sum= 0;
+  for (let i = 0; i < x.length; i++) {
+    sum += x[i];
+  }
+  return sum;
 }
-
-console.log(countValues(a));
+console.log(summ(c))
